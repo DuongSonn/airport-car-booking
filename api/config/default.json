@@ -1,0 +1,79 @@
+{
+    "account_status": {
+        "deactive": 2,
+        "active": 1
+    },
+    "payment_status": {
+        "new": 0,
+        "done": 1
+    },
+    "payment_type" : {
+        "transfer_money": 0,
+        "pay_in_cash": 1
+    },
+    "request_status": {
+        "new": 0,
+        "to_contract": 1,
+        "cancel": 2
+    },
+    "contract_status": {
+        "new": 0,
+        "driver_start": 1,
+        "driver_done": 2,
+        "done": 3,
+        "cancel": 4
+    },
+    "destination_type": {
+        "pickup": 0,
+        "drop_off": 1
+    },
+    "account_level": {
+        "level_1": 1,
+        "level_2": 2
+    },
+    "api": {
+        "google_distance_api": "https://maps.googleapis.com/maps/api/distancematrix/json?"
+    },
+    "convert": {
+        "m_to_km": 1000,
+        "vnd": 1000
+    },
+    "market_price": 25,
+    "request_fee": 20,
+    "discount_member": 10,
+    "regex_phone": "(84|0[3|5|7|8|9])+([0-9]{8})\\b",
+    "default_password": "123456789",
+    "role": {
+        "agency": "agency",
+        "host": "host",
+        "driver": "driver",
+        "admin": "admin"
+    },
+    "language": {
+        "vi": "vi",
+        "en": "en"
+    },
+    "driver_status": {
+        "active": 1,
+        "deactive": 2,
+        "pending": 0
+    },
+    "notification": {
+        "request": "request",
+        "contract": "contract"
+    },
+    "driver_deposit": 50000,
+    "cash_flow_type": {
+        "transfer_to_system": 1,
+        "transfer_inside_system": 2,
+        "admin": 3,
+        "driver_recharge": 4,
+        "driver_withdraw": 5
+    },
+    "cash_flow_status": {
+        "new": 0,
+        "done": 1,
+        "error": 2,
+        "cancel": 3
+    }
+}
