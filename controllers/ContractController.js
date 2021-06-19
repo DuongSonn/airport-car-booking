@@ -67,7 +67,7 @@ exports.createContract = async (req, res) => {
 
             let cash_flow;
             // Create Transaction
-            await axios.post(`${process.env.API_URL}/api/cash-flows`, {
+            await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
                 sender_id: host_driver.user_id._id,
                 receiver_id: admin._id,
                 amount: delta,
@@ -97,7 +97,7 @@ exports.createContract = async (req, res) => {
 
             if (cash_flow) {
                 // Update Transaction
-                await axios.put(`${process.env.API_URL}/api/cash-flows/${cash_flow._id}`, null, {
+                await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
                     headers: {
                         authorization: req.headers['authorization']
                     },
@@ -231,7 +231,7 @@ exports.updateContract = async (req, res) => {
     
                     let cash_flow
                         // Create Transaction
-                    await axios.post(`${process.env.API_URL}/api/cash-flows`, {
+                    await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
                         sender_id:admin._id,
                         receiver_id: contract[0].driver_id,
                         amount: check_cash_flow.amount,
@@ -260,7 +260,7 @@ exports.updateContract = async (req, res) => {
                     });
     
                     // Update Transaction
-                    await axios.put(`${process.env.API_URL}/api/cash-flows/${cash_flow._id}`, null, {
+                    await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
                         headers: {
                             authorization: req.headers['authorization']
                         },
@@ -746,7 +746,7 @@ exports.deleteContract = async (req, res) => {
                     request_id: check_contract.request_id
                 });
                 if (check_contract.request_id.payment_status === config.get('payment_status.new')) {
-                    await axios.delete(`${process.env.API_URL}/api/cash-flows/${check_cash_flow._id}`, {
+                    await axios.delete(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${check_cash_flow._id}`, {
                         headers: {
                             authorization: req.headers['authorization']
                         },
@@ -769,7 +769,7 @@ exports.deleteContract = async (req, res) => {
                 } else if (check_contract.request_id.payment_status === config.get('payment_status.done')) {
                     let cash_flow
                     // Create Transaction
-                    await axios.post(`${process.env.API_URL}/api/cash-flows`, {
+                    await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
                         sender_id: check_cash_flow.receiver_id,
                         receiver_id: check_cash_flow.sender_id,
                         amount: check_cash_flow.amount,
@@ -797,7 +797,7 @@ exports.deleteContract = async (req, res) => {
                     });
 
                     // Update Transaction
-                    await axios.put(`${process.env.API_URL}/api/cash-flows/${cash_flow._id}`, null, {
+                    await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
                         headers: {
                             authorization: req.headers['authorization']
                         },
