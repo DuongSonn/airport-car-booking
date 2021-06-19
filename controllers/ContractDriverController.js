@@ -138,7 +138,7 @@ exports.updateContractDriver = async (req, res) => {
                 let amount = (contract.request_id.price - contract.request_id.price / 100 * contract.request_id.discount) - contract.request_id.base_price;
                 amount = Math.round(amount / config.get('convert.vnd')) * config.get('convert.vnd');
 
-                await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                await axios.post(`${process.env.API_URL}/api/cash-flows`, {
                     sender_id: host_driver.user_id._id,
                     receiver_id: admin._id,
                     amount: amount,
@@ -167,7 +167,7 @@ exports.updateContractDriver = async (req, res) => {
                 });
 
                 // Update Transaction
-                await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
+                await axios.put(`${process.env.API_URL}/api/cash-flows/${cash_flow._id}`, null, {
                     headers: {
                         authorization: req.headers['authorization']
                     },
@@ -197,7 +197,7 @@ exports.updateContractDriver = async (req, res) => {
                 });
                 let length = check_cash_flow.length;
 
-                await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                await axios.post(`${process.env.API_URL}/api/cash-flows`, {
                     sender_id: check_cash_flow[length-1].receiver_id,
                     receiver_id: check_cash_flow[length-1].sender_id,
                     amount: check_cash_flow[length-1].amount,
@@ -226,7 +226,7 @@ exports.updateContractDriver = async (req, res) => {
                 });
 
                 // Update Transaction
-                await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
+                await axios.put(`${process.env.API_URL}/api/cash-flows/${cash_flow._id}`, null, {
                     headers: {
                         authorization: req.headers['authorization']
                     },
