@@ -11,7 +11,9 @@ const { socket } = require('../utils/socket');
 require('dotenv').config();
 
 // Connect MongoDB
-mongoose.connect(process.env.DATABASE || 'mongodb://localhost:27017/duadonsanbay', {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect(process.env.DATABASE || 'mongodb://localhost:27017/duadonsanbay', {useNewUrlParser: true, useUnifiedTopology: true});
+const uri = 'mongodb+srv://123abnkakashi:123abnkakashi@cluster0.1wfl8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

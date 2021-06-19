@@ -5,7 +5,7 @@ var CarType = require('../models/CarType');
 exports.getListCarTypes = async (req, res) => {
     try {
         let car_types = await CarType.find();
-
+        console.log(car_types);
         return res.status(200).json({
             car_types: car_types
         });

@@ -12,7 +12,9 @@ var UserSeeder = require('./UserSeeder');
 
 exports.DBSeed = async () => {
     try {
-        mongoose.connect(process.env.DATABASE);
+        // mongoose.connect(process.env.DATABASE);
+        const uri = 'mongodb+srv://123abnkakashi:123abnkakashi@cluster0.1wfl8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+        mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
         await CarTypeSeeder.CarTypeSeeder();
         await RoleSeeder.RoleSeeder();

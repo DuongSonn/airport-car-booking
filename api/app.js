@@ -31,7 +31,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './build')));
 app.use(cors(corsOptions));
 
 i18n.configure({
@@ -49,6 +50,9 @@ app.use('/api/language', languageRouter);
 app.use('/api/provinces', provincesRouter);
 app.use('/api/car-types', carTypesRouter);
 app.use('/api/cash-flows', cashFlowRouter);
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, './build', 'index.html'));
+});
 
 // Schedule tasks to be run on the server.
 cron.schedule('0 0 * * *', function() {
