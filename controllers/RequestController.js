@@ -547,17 +547,17 @@ exports.updateRequest = async (req, res) => {
             // Update cashflow or create
             if (payment_type === config.get('payment_type.transfer_money')) {
                 let amount;
-                if (discount) {
+                if (check_request.discount) {
                     amount = price - (price / 100 * discount)
                     amount = Math.round(amount / config.get('convert.vnd')) * config.get('convert.vnd');
                 } else {
                     amount = price
                 }
                 
-                let checkCashFlow = await CashFlow.findOne({ request_id: req.params.id });
-                if (checkCashFlow) {
-                    checkCashFlow.amount = amount;
-                    checkCashFlow.save();
+                let check_cash_flow = await CashFlow.findOne({ request_id: req.params.id });
+                if (check_cash_flow) {
+                    check_cash_flow.amount = amount;
+                    check_cash_flow.save();
                 } else {
                     await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
                         type: config.get('cash_flow_type.transfer_to_system'),
