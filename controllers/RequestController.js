@@ -556,7 +556,6 @@ exports.updateRequest = async (req, res) => {
             const { driver_name, driver_phone, driver_avatar, car_plate, car_name, host_driver_id } = req.body;
             var contract;
 
-            // await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts`, {
             await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts`, {
                 request_id: req.params.id,
                 host_id: req.user._id,
@@ -577,7 +576,6 @@ exports.updateRequest = async (req, res) => {
                 })
             });
 
-            // await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts/contract-driver`, {
             await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts/contract-driver`, {
                 name: driver_name,
                 phone: driver_phone,
