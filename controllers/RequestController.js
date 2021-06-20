@@ -27,6 +27,14 @@ const ContractDispatcher = require('../events/ContractDispatcher');
 
 require('dotenv').config();
 
+let api_url;
+if (process.env.PORT && process.env.API_URL) {
+    api_url = `${process.env.PORT}:${process.env.API_URL}`;
+} else {
+    api_url = config.get('api.app_api');
+}
+
+
 async function calculateDistance(pickup_locations, drop_off_locations) {
     var distance = 0;
     var number_of_pickup_locations = pickup_locations.length;
@@ -34,27 +42,27 @@ async function calculateDistance(pickup_locations, drop_off_locations) {
 
     if (number_of_pickup_locations > 1) {
         for (let index = 0; index < number_of_pickup_locations - 1; index++) {
-            let api_url = config.get('api.google_distance_api') + 'origins=' + pickup_locations[index]
+            let api_google_url = config.get('api.google_distance_api') + 'origins=' + pickup_locations[index]
                 + '&destinations=' + pickup_locations[index + 1] + '&key=' + process.env.GOOGLE_API_KEY;
-            api_url = encodeURI(api_url)
-            let response = await axios.get(api_url);
+                api_google_url = encodeURI(api_google_url)
+            let response = await axios.get(api_google_url);
             distance += response.data.rows[0].elements[0].distance.value;
         }
     }
 
-    let api_url = config.get('api.google_distance_api') + 'origins=' 
+    let api_google_url = config.get('api.google_distance_api') + 'origins=' 
         + pickup_locations[number_of_pickup_locations - 1] + '&destinations=' 
         + drop_off_locations[0] + '&key=' + process.env.GOOGLE_API_KEY;    
-    api_url = encodeURI(api_url)
-    let response = await axios.get(api_url);
+    api_google_url = encodeURI(api_google_url)
+    let response = await axios.get(api_google_url);
     distance += response.data.rows[0].elements[0].distance.value;
 
     if (number_of_drop_off_locations > 1) {
         for (let index = 0; index < number_of_drop_off_locations - 1; index++) {
-            let api_url = config.get('api.google_distance_api') + 'origins=' + drop_off_locations[index]
+            let api_google_url = config.get('api.google_distance_api') + 'origins=' + drop_off_locations[index]
                 + '&destinations=' + drop_off_locations[index + 1] + '&key=' + process.env.GOOGLE_API_KEY;
-            api_url = encodeURI(api_url)
-            let response = await axios.get(api_url);
+            api_google_url = encodeURI(api_google_url)
+            let response = await axios.get(api_google_url);
             distance += response.data.rows[0].elements[0].distance.value;
         }
     }
@@ -442,7 +450,7 @@ exports.createRequest = async (req, res) => {
                     amount = price
                 }
     
-                await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                await axios.post(`${api_url}/api/cash-flows`, {
                     type: config.get('cash_flow_type.transfer_to_system'),
                     amount: amount,
                     request_id: request._id,
@@ -559,7 +567,7 @@ exports.updateRequest = async (req, res) => {
                     check_cash_flow.amount = amount;
                     check_cash_flow.save();
                 } else {
-                    await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                    await axios.post(`${api_url}/api/cash-flows`, {
                         type: config.get('cash_flow_type.transfer_to_system'),
                         amount: amount,
                         request_id: request._id,
@@ -598,7 +606,7 @@ exports.updateRequest = async (req, res) => {
             const { driver_name, driver_phone, driver_avatar, car_plate, car_name, host_driver_id } = req.body;
             var contract;
 
-            await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts`, {
+            await axios.post(`${api_url}/api/contracts`, {
                 request_id: req.params.id,
                 host_id: req.user._id,
                 host_driver_id: host_driver_id,
@@ -618,7 +626,7 @@ exports.updateRequest = async (req, res) => {
                 })
             });
 
-            await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/contracts/contract-driver`, {
+            await axios.post(`${api_url}/api/contracts/contract-driver`, {
                 name: driver_name,
                 phone: driver_phone,
                 avatar: driver_avatar,
@@ -988,7 +996,7 @@ exports.deleteRequest = async (req, res) => {
                 });
                 if (check_request.payment_status === config.get('payment_status.new')) {
                     // Cancel Transaction
-                    await axios.delete(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${check_cash_flow._id}`, {
+                    await axios.delete(`${api_url}/api/cash-flows/${check_cash_flow._id}`, {
                         headers: {
                             authorization: req.headers['authorization']
                         },
@@ -1011,7 +1019,7 @@ exports.deleteRequest = async (req, res) => {
                 } else if (check_request.payment_status === config.get('payment_status.done')) {
                     let cash_flow
                     // Create Transaction
-                    await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                    await axios.post(`${api_url}/api/cash-flows`, {
                         sender_id: check_cash_flow.receiver_id,
                         receiver_id: check_cash_flow.sender_id,
                         amount: check_cash_flow.amount,
@@ -1039,7 +1047,7 @@ exports.deleteRequest = async (req, res) => {
                     });
 
                     // Update Transaction
-                    await axios.put(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows/${cash_flow._id}`, null, {
+                    await axios.put(`${api_url}/api/cash-flows/${cash_flow._id}`, null, {
                         headers: {
                             authorization: req.headers['authorization']
                         },

@@ -32,7 +32,8 @@
         "level_2": 2
     },
     "api": {
-        "google_distance_api": "https://maps.googleapis.com/maps/api/distancematrix/json?"
+        "google_distance_api": "https://maps.googleapis.com/maps/api/distancematrix/json?",
+        "app_api": "https://airport-car-booking-vdmtb.ondigitalocean.app"
     },
     "convert": {
         "m_to_km": 1000,
