@@ -548,7 +548,7 @@ exports.updateRequest = async (req, res) => {
             if (payment_type === config.get('payment_type.transfer_money')) {
                 let amount;
                 if (check_request.discount) {
-                    amount = price - (price / 100 * discount)
+                    amount = price - (price / 100 * check_request.discount)
                     amount = Math.round(amount / config.get('convert.vnd')) * config.get('convert.vnd');
                 } else {
                     amount = price
