@@ -631,7 +631,8 @@ exports.updateRequest = async (req, res) => {
         }
     } catch (error) {
         console.log(`Error general: ${error}`);
-
+        console.log(`API URL: ${process.env.API_URL}`);
+        console.log(`PORT: ${process.env.PORT}`);
         res.status(500).json({
             message: i18n.__('unknown_error'),
         });
