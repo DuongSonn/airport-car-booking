@@ -493,7 +493,7 @@ exports.updateRequest = async (req, res) => {
         let base_price = price - (price * config.get('request_fee') / 100);
         base_price = Math.round(base_price / config.get('convert.vnd')) * config.get('convert.vnd');
         
-        let check_request = await Request.findOne({
+        const check_request = await Request.findOne({
             _id: req.params.id
         });
         // Update Request
@@ -513,7 +513,7 @@ exports.updateRequest = async (req, res) => {
                     updated_at: Date.now(),
                 }
             );
-            let request_customer = await RequestCustomer.updateOne(
+            await RequestCustomer.updateOne(
                 { request_id: req.params.id },
                 {
                     name: name,
@@ -522,7 +522,7 @@ exports.updateRequest = async (req, res) => {
                 }
             );
     
-            let pickup_location = await RequestDestination.updateOne(
+            await RequestDestination.updateOne(
                 { 
                     request_id: req.params.id,
                     type: config.get('destination_type.pickup'),
@@ -533,7 +533,7 @@ exports.updateRequest = async (req, res) => {
                 }
             );
             
-            let drop_off_location = await RequestDestination.updateOne(
+            await RequestDestination.updateOne(
                 { 
                     request_id: req.params.id,
                     type: config.get('destination_type.drop_off'),
