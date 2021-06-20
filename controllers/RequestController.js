@@ -543,6 +543,48 @@ exports.updateRequest = async (req, res) => {
                     updated_at: Date.now(),
                 }
             );
+            
+            // Update cashflow or create
+            if (payment_type === config.get('payment_type.transfer_money')) {
+                let amount;
+                if (discount) {
+                    amount = price - (price / 100 * discount)
+                    amount = Math.round(amount / config.get('convert.vnd')) * config.get('convert.vnd');
+                } else {
+                    amount = price
+                }
+                
+                let checkCashFlow = await CashFlow.findOne({ request_id: req.params.id });
+                if (checkCashFlow) {
+                    checkCashFlow.amount = amount;
+                    checkCashFlow.save();
+                } else {
+                    await axios.post(`${process.env.API_URL}:${process.env.PORT}/api/cash-flows`, {
+                        type: config.get('cash_flow_type.transfer_to_system'),
+                        amount: amount,
+                        request_id: request._id,
+                    }, {
+                        headers: {
+                            authorization: req.headers['authorization']
+                        },
+                    }).then((response) => {
+        
+                    }).catch((error) => {
+                        let message = error.response.data.message;
+                        let errors = error.response.data.errors;
+        
+                        if (message) {
+                            return res.status(500).json({
+                                message: message,
+                            })
+                        } else {
+                            return res.status(400).json({
+                                errors: errors,
+                            })
+                        }
+                    });
+                }
+            }
 
             return res.status(200).json({
                 message: i18n.__mf('update_success', i18n.__('request')),
