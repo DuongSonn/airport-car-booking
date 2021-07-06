@@ -69,7 +69,8 @@
         "transfer_inside_system": 2,
         "admin": 3,
         "driver_recharge": 4,
-        "driver_withdraw": 5
+        "driver_withdraw": 5,
+        "transfer_back": 6
     },
     "cash_flow_status": {
         "new": 0,

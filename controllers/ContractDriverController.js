@@ -12,7 +12,7 @@ const e = require('cors');
 
 let api_url;
 if (process.env.PORT && process.env.API_URL) {
-    api_url = `${process.env.PORT}:${process.env.API_URL}`;
+    api_url = `${process.env.API_URL}:${process.env.PORT}`;
 } else {
     api_url = config.get('api.app_api');
 }

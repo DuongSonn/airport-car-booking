@@ -29,7 +29,7 @@ require('dotenv').config();
 
 let api_url;
 if (process.env.PORT && process.env.API_URL) {
-    api_url = `${process.env.PORT}:${process.env.API_URL}`;
+    api_url = `${process.env.API_URL}:${process.env.PORT}`;
 } else {
     api_url = config.get('api.app_api');
 }
@@ -618,7 +618,7 @@ exports.updateRequest = async (req, res) => {
                 contract = response.data.contract;
             })
             .catch(async function (error) {
-                console.log(`Error create contract: ${error}`);
+                console.log(`Error create contract requestcontroller: ${error}`);
                 let message = error.response.data.message
 
                 return res.status(500).json({
@@ -640,7 +640,7 @@ exports.updateRequest = async (req, res) => {
             }).then((response) => {
                
             }).catch((error) => {
-                console.log(`Error create contract driver: ${error}`);
+                console.log(`Error create contract driver requestcontroller: ${error}`);
                 let message = error.response.data.message;
                 let errors = error.response.data.errors;
 
@@ -680,9 +680,7 @@ exports.updateRequest = async (req, res) => {
             });
         }
     } catch (error) {
-        console.log(`Error general: ${error}`);
-        console.log(`API URL: ${process.env.API_URL}`);
-        console.log(`PORT: ${process.env.PORT}`);
+        console.log(`Error general requestcontroller: ${error}`);
         res.status(500).json({
             message: i18n.__('unknown_error'),
         });
@@ -1024,35 +1022,13 @@ exports.deleteRequest = async (req, res) => {
                         receiver_id: check_cash_flow.sender_id,
                         amount: check_cash_flow.amount,
                         request_id: check_cash_flow.request_id,
-                        type: config.get('cash_flow_type.transfer_inside_system'),
+                        type: config.get('cash_flow_type.transfer_back'),
                     }, {
                         headers: {
                             authorization: req.headers['authorization']
                         },
                     }).then((response) => {
                        cash_flow = response.data.cash_flow;
-                    }).catch((error) => {
-                        let message = error.response.data.message;
-                        let errors = error.response.data.errors;
-        
-                        if (message) {
-                            return res.status(500).json({
-                                message: message,
-                            })
-                        } else {
-                            return res.status(400).json({
-                                errors: errors,
-                            })
-                        }
-                    });
-
-                    // Update Transaction
-                    await axios.put(`${api_url}/api/cash-flows/${cash_flow._id}`, null, {
-                        headers: {
-                            authorization: req.headers['authorization']
-                        },
-                    }).then((response) => {
-                        
                     }).catch((error) => {
                         let message = error.response.data.message;
                         let errors = error.response.data.errors;

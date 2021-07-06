@@ -44,6 +44,7 @@ exports.createCashFlow = async (req, res) => {
                 sender_id = req.user._id;
 
                 break;
+            case config.get('cash_flow_type.transfer_back'):
             case config.get('cash_flow_type.transfer_inside_system'):
                 receiver_id = req.body.receiver_id;
                 sender_id = req.body.sender_id;
@@ -95,6 +96,7 @@ exports.createCashFlow = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(`Error cashflowcontroller: ${error}`);
         res.status(500).json({
             message: i18n.__('unknown_error'),
         });
@@ -133,7 +135,12 @@ exports.getRequestCashFlow = async (req, res) => {
 
         let options = {
             $and: [
-                { type: config.get('cash_flow_type.transfer_to_system') },
+                {
+                    $or: [
+                        { type: config.get('cash_flow_type.transfer_to_system') },
+                        { type: config.get('cash_flow_type.transfer_back') },
+                    ],
+                },
                 status_option,
             ]
         }
@@ -286,6 +293,7 @@ exports.updateCashFlow = async (req, res) => {
                 user.save();
 
                 break;
+            case config.get('cash_flow_type.transfer_back'):
             case config.get('cash_flow_type.driver_withdraw'):
                 user = await User.findOne({
                     _id: mongoose.Types.ObjectId(cash_flow.sender_id)
