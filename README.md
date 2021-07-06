@@ -18,13 +18,13 @@ Install Nodejs Package
 > npm install
 
 Create .env file
-> PORT=
-> DATABASE=
-> ACCESS_TOKEN_SECRET=
-> REFRESH_TOKEN_SECRET=
-> GOOGLE_API_KEY=
-> API_URL=
-> CLIENT_URL=
+> PORT=  
+> DATABASE=  
+> ACCESS_TOKEN_SECRET=  
+> REFRESH_TOKEN_SECRET=  
+> GOOGLE_API_KEY=  
+> API_URL=  
+> CLIENT_URL=  
 
 Create a mongo collection name: duadonsanbay
 
@@ -35,9 +35,9 @@ Open project folder
 Seed the database
 > npm run seed
 
-Rename the 'build' folder to 'build deploy'
+Rename the **build** folder to **build deploy**
 
-Rename the 'build local' folder to 'build'
+Rename the **build local** folder to **build**
 
 Run the server
 > npm start
