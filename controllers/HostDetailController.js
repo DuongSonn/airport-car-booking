@@ -27,13 +27,13 @@ exports.validate = (method) => {
             ]
         case 'update':
             return [
-                body('quantity')
-                    .exists().withMessage(() => {
-                        return i18n.__mf('required', i18n.__('quantity'));
-                    })
-                    .isInt({ min: 1 }).withMessage(() => {
-                        return i18n.__mf('invalid', i18n.__('quantity'));
-                    }),
+                // body('quantity')
+                //     .exists().withMessage(() => {
+                //         return i18n.__mf('required', i18n.__('quantity'));
+                //     })
+                //     .isInt({ min: 1 }).withMessage(() => {
+                //         return i18n.__mf('invalid', i18n.__('quantity'));
+                //     }),
                 body('user')
                     .custom(async (value, {req}) => {
                         let check_detail = await HostDetail.findById({
@@ -95,20 +95,35 @@ exports.updateHostDetail = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { quantity } = req.body;
-        let check_detail = await HostDetail.findOneAndUpdate(
+        // console.log(req.body);
+        const { quantity, car_type_id, province_id } = req.body;
+
+        let check_detail = await HostDetail.findOne({
+            user_id: req.user._id,
+            province_id: province_id,
+            car_type_id: car_type_id,
+        });
+        if (check_detail) {
+            return res.status(409).json({ 
+                message: i18n.__('detail_exist'),
+            });
+        }
+
+        let update_detail = await HostDetail.findOneAndUpdate(
             {
                 _id: req.params.id
             },
             { 
-                quantity: quantity,
+                quantity: 1,
+                province_id: province_id,
+                car_type_id: car_type_id,
                 updated_at: Date.now(),
             }
         );
-        if (check_detail) {
+        if (update_detail) {
             return res.status(200).json({ 
                 message: i18n.__mf('update_success', i18n.__('working_province')),
-                host_detail: check_detail
+                host_detail: update_detail
             });
         }
     } catch (error) {

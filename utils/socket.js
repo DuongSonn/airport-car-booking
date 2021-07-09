@@ -11,18 +11,20 @@ const socket = (() => {
         init: function(server) {
             io = require('socket.io')(server, {
                 cors: {
-                  origin: `${process.env.CLIENT_URL}`,
+                  origin: [`${process.env.CLIENT_URL}`, "http://localhost:3000"],
                 },
             })
 
             io.sockets.on('connection', function (socket) {
                 if (socket.handshake.query.role) {
                     if (socket.handshake.query.role === config.get('role.agency')) {
+                        console.log("New agency connected " + socket.handshake.query._id);
                         agencies.push({
                             userId: socket.handshake.query._id,
                             socketId: socket.id
                         })
                     } else if (socket.handshake.query.role === config.get('role.host')) {
+                        console.log("New host connected " + socket.handshake.query._id);
                         hosts.push({
                             userId: socket.handshake.query._id,
                             socketId: socket.id
